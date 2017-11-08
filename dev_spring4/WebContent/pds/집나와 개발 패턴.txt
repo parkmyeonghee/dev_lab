@@ -1,0 +1,131 @@
+JibnawaTeam 업무 개발 환경
+
+현재 수업중인 스프링 패턴으로 구성이 되어 있습니다.
+이 자료를 공유하는 목적은 메인페이지 에서 TEST 버튼을 클릭했을 때 자신이 개발한 페이지를 호출되어야 하며,
+ DB랑 연결 시 그리드에 데이터가 출력되는 테스트를 하기 위함입니다.
+
+프로젝트 : jibnawa
+- 구분
+  WEB-INF
+  Java Resoures
+  WebContent
+
+
+1. WEB-INF
+
+서블릿 등록
+파일 : spring-servlet.xml
+
+	<!-- member controller 주입 시작-->
+	<context:component-scan base-package="com.jibnawa.member">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>	
+	</context:component-scan>
+ 	<!-- member controller 주입 끝-->
+
+※ base-package="com.jibnawa.member"는 Java Resoures에 있는 패키지
+-패키지는 com.jibnawa.업무명 (com.jibnawa까지는 동일 하게 한다.)
+
+서비스(Logic) 등록
+파일 : spring-service.xml
+	<!-- member 서비스 로직 등록  -->
+	<bean id="jibnawaMemberLogic" class="com.jibnawa.member.JibnawaMemberLogic"/>
+※com.jibnawa.member.JibnawaMemberLogic 자바클래스 등록
+
+DAO 클래스 등록
+	<bean id="jibnawaMemberDao" class="com.jibnawa.member.JibnawaMemberDao">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+	</bean>
+※com.jibnawa.member.JibnawaMemberDao 자바클래스 등록
+
+mybatis mapper등록
+파일 : mybatis-config.xml
+
+	<!-- mybatis mapper 등록 시작 -->
+	<mappers>
+		<mapper resource="com/mybatis/mapper/jibnawaMember.xml" />
+	</mappers>
+	<!-- mybatis mapper 등록 끝 -->
+※ com/mybatis/mapper/jibnawaMember.xml 쿼리가 저장된 XML 등록
+
+
+2.Java Resoures
+자바 패키지는 업무명으로 나뉜다.
+단 com.jibnawa까지는 동일하며 com.jibnawa.업무명을 적는다.
+com.jibnawa.member 여기서 member는 업무명이된다.
+
+패키지 안에 클래스명 (패키지 :com.jibnawa.member)
+
+JibnawaMemberController
+JibnawaMemberDao
+JibnawaMemberLogic
+JibnawaMemberVO
+
+클래스명 Jibnawa+업무명+Controller/Dao/Logic/VO 으로 만든다.
+
+※위에 자바 클래스는 직접 분석하여 자신의 업무 패키지를 만들기 바랍니다.
+ 
+3. WebContent
+
+mainPage 위치
+WebContent/main/main3.jsp
+
+test 페이지
+WebContent/jibnawa/jibnawaMember.jsp
+※ jibnawa+업무명.jsp로 만든다.
+
+
+test 페이지 호출
+
+WebContent/main/main3.jsp 안에
+
+  TEST: function () {
+         myModal.open({
+        	 //테스트 페이지 위치 설정
+             url: "../jibnawa/jibnawaMember.kosmo",
+             //url:"/samples/AXgrid/index.html",
+             pars: "a=1&b=2&c=3".queryToObject(),
+             top: 100,
+             width:800,
+             closeByEscKey: true
+         });
+     }
+
+ 페이지 호출 URL : url: "../jibnawa/jibnawaMember.kosmo"
+
+
+TEST JSON 설정
+WebContent/jibnawa/jibnawaMember.jsp
+
+VO import
+<%@ page import="java.util.List, com.jibnawa.member.JibnawaMemberVO"%>
+<%@ page import="org.json.simple.JSONValue"%>
+//JSON 영역
+<%
+   //json 형식으로 데이터 받기
+	List<JibnawaMemberVO> jibnawaMember = 
+	//getAttribute("jibnawaMember"); 는  controller.java 에서 //pMap.addAttribute("jibnawaMember",jibnawaMember);과 동일하게 맞추기
+	(List<JibnawaMemberVO>)request.getAttribute("jibnawaMember");
+	String jsonJib = JSONValue.toJSONString(jibnawaMember);
+	//데이터를 그리드에 전달하는 부분 myGrid.setList(); 에서 json 데이터를 받아 줌  스크립트에서 JSP 변수를 받을 수 있게 보냄  예 myGrid.setList( < %= jsonJib % >);
+%>
+
+
+그리드에 JSON 데이터 담기
+ myGrid.setList(<%=jsonJib%>);
+
+
+JSON key와 데이터 맞추기
+
+                var getColGroup = function(){
+                	//JSON key name과 도일 하게 맞추기
+                    return [
+                            {key:"MEM_EMAIL", label:"MEM_EMAIL", width:"100", align:"center"},
+                            {key:"MEM_PW", label:"MEM_PW", width:"100", align:"center"},
+                            {key:"MEM_EMAIL", label:"MEM_EMAIL", width:"100", align:"center"},
+                            {key:"MEM_NICKNAME", label:"MEM_EMAIL", width:"100", align:"center"},
+                            {key:"MEM_PHONE_F", label:"MEM_PHONE_F", width:"100", align:"center"},
+                            {key:"MEM_PHONE_M", label:"MEM_PHONE_M", width:"100", align:"center"},
+                            {key:"MEM_PHONE_M", label:"MEM_PHONE_E", width:"100", align:"center"}
+                    ];
+                };

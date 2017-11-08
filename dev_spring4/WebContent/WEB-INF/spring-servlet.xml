@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+ http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+ http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd" 
+ >
+<bean id="default-handler-mapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	<mvc:annotation-driven/>
+	<!-- 
+	스프링에서 지원하는 트랜잭션 어노테이션 클래스 로딩 
+	자바코드로 구현하지 않고 기능구현이 가능하다.
+	 -->
+	<tx:annotation-driven/>
+	<!--
+	Auto-Detecting
+	Stereotype Annotation을 사용하여 Bean을 정의하면 XML에 기본적인
+	Bean 정의를 명시하지 않아도 Spring Container가 Bean을 인식하고 관리 할 수 있다.
+	단 자동을 인식하기 되기 위해서는 서비스 속성 정의 XML에 특정한 정의가 필요.
+	<context:component-scan>
+	base-package 속성에는 Spring Container에 Bean으로 등록되어야 할 클래스들을
+	검색할 대상 package로 정의해주면 됌.
+	 <bean id="boardController" class="com.mvc.BoardController"/> 
+	 :생략이 가능한 이유는 Spring에서 auto뭐시기가 되어서 그렇다.
+	 -->
+	
+	<mybatis:scan base-package="com.mybatis.mapper"/>
+ 	<context:component-scan base-package="com.mvc">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>	
+	</context:component-scan> 
+		<context:component-scan base-package="com.test">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>	
+	</context:component-scan>
+ 	<mvc:resources location="/images/" mapping="/images/**"/>	
+ 	<mvc:resources location="/js/" mapping="/js/**"/>	
+<!-- 첨부 파일 관련 설정 추가 -->	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5242880"/>
+		<property name="maxInMemorySize" value="10240"/>
+		<property name="defaultEncoding" value="ISO-8859-1"/>
+	</bean>	
+	<bean name="/insaList.kosmo" class="com.di.ListController">
+	<property name="insaBean">
+	<list>
+	<value>Hi</value>
+	<value>Have a Good Time!!!</value>
+	<value>Have a Nice Day!!!</value>
+	</list>
+	</property>
+	</bean>
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

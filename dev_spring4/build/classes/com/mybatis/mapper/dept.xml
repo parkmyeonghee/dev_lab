@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeptMapper">
+	<update id="deptUpdate" parameterType="map">
+		UPDATE dept
+		      SET dname = #{dname}
+		           ,loc = #{loc}
+		  WHERE deptno = #{deptno}         
+	</update>
+	<delete id="deptDelete" parameterType="dVO">
+		DELETE FROM dept
+		 WHERE deptno = #{deptno}	
+	</delete>
+    <insert id="deptInsert" parameterType="map">
+		INSERT INTO dept(deptno, dname, loc)
+		           VALUES(#{deptno},#{dname},#{loc})    
+    </insert>
+	<select id="currentTime" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT TO_CHAR(sysdate,'YYYY-MM-DD') FROM dual
+	</select>
+	<select id="getDeptnoList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT deptno, dname
+		   FROM dept	   
+	</select>	
+	<select id="totalRecord" parameterType="int" resultType="int">
+		SELECT count(deptno) as total FROM dept	
+	</select>
+	<select id="getDeptList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT
+		       t_dept.deptno, t_dept.dname, t_dept.loc
+		  FROM ( 
+		        SELECT 
+		               rownum rnum, deptno, dname, loc
+		          FROM dept  
+		       )t_dept
+		<where>
+			<if test="start!=null">
+				<![CDATA[ AND t_dept.rnum >= #{start} ]]>
+			</if>
+			<if test="end!=null">
+				<![CDATA[ AND t_dept.rnum <=#{end} ]]>
+			</if>		
+			<if test="deptno!=null">
+				AND t_dept.deptno = #{deptno}
+			</if>
+			<if test="dname!=null">
+				AND t_dept.dname LIKE '%'||#{dname}||'%'
+			</if>
+			<if test="loc!=null">
+				AND t_dept.loc LIKE '%'||#{loc}||'%'
+			</if>						
+		</where>	   
+		ORDER BY t_dept.deptno asc
+	</select>
+		<select id="getDeptList2" parameterType="java.util.HashMap" resultType="dVO">
+		SELECT
+		       t_dept.deptno, t_dept.dname, t_dept.loc
+		  FROM ( 
+		        SELECT 
+		               rownum rnum, deptno, dname, loc
+		          FROM dept  
+		       )t_dept
+		<where>
+			<if test="start!=null">
+				<![CDATA[ AND t_dept.rnum >= #{start} ]]>
+			</if>
+			<if test="end!=null">
+				<![CDATA[ AND t_dept.rnum <=#{end} ]]>
+			</if>		
+			<if test="deptno!=null">
+				AND t_dept.deptno = #{deptno}
+			</if>
+			<if test="dname!=null">
+				AND t_dept.dname LIKE '%'||#{dname}||'%'
+			</if>
+			<if test="loc!=null">
+				AND t_dept.loc LIKE '%'||#{loc}||'%'
+			</if>						
+		</where>	   
+		ORDER BY t_dept.deptno asc
+	</select>
+</mapper>
+
+

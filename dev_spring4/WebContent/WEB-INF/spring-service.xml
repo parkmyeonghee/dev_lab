@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+ http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+ http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd" 
+ >
+	<bean id="message-source" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="message_ko"/>
+	</bean>
+	<bean id="deptLogic" class="com.mvc.DeptLogic"/>
+	<bean id="commonLogic" class="com.mvc.CommonLogic"/>
+	<bean id="empLogic" class="com.mvc.EmpLogic"/>
+	<bean id="boardLogic" class="com.mvc.BoardLogic"/>
+	<!--
+	AOP는 공통적으로 사용하는 것들에 대한 의존관계의 복잡성과 코드의 중복성을
+	해소해주는 프로그래밍 기법으로 스프링에 적용되었다.
+	코드의 중복성이란?
+	setAutoCommit(false) ->methodA();,methodB();,methodC();,->commit()
+	->setAutoCommit(true)
+	AOP의 역할은?
+	공통된 관심사를 가진 클래스 계층을 분리할 수 있도록 해준다.
+	개입할 수 있다.(bebore,after)
+	AOP는 어플리케이션 전체에 걸쳐 사용되는 기능들을 재사용할 수 있는 컴포넌트에 
+	담을 수 있도록 해준다.
+	AOP를 통해서 얻을 수 있는 장점은?
+	별도의 자바코드를 추가하지 않고도 필요한 공통 기능 모듈을 적용 가능
+	
+	어떤 클래스에 어떤 메소드를 적용할 것인가?
+	: 정규식을 이용해서 적용할 수 있게 하였다.
+	:expression속성을 이용해서 설정할 수 있다.
+	expression("com.mvc.*Logic.*(..))
+	->return type이 any type이고 0개 이상의 any type parameter를 가진 Logic메소드
+	실행 시점을 의미한다.
+	
+	AOP네임스페이스에서는
+	어디에서(PointCut) - com.mvc.BoardLogic에서
+	무엇을 할 것인지(Advisor)를 합쳐 놓은 것이다.
+	  -->
+<aop:config>
+  <aop:pointcut id="point-cut" expression="execution(* com.mvc.*Logic.*(..))"/>
+  <aop:advisor advice-ref="tx-advice" pointcut-ref="point-cut"/>
+  </aop:config>
+   <tx:advice id="tx-advice" transaction-manager="transactionManager">
+   <tx:attributes>
+      <tx:method name="do*"></tx:method>
+      <tx:method name="get*" read-only="true"></tx:method>
+   </tx:attributes>
+   </tx:advice>
+</beans>
+
+
+
+

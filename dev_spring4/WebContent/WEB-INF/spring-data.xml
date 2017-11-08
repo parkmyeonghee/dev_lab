@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	<bean id="data-source" class="com.p6spy.engine.spy.P6DataSource">
+		<constructor-arg ref="data-source-target"/>
+	</bean>
+ 	<bean id="data-source-target2" class="org.springframework.jndi.JndiObjectFactoryBean">
+      <property name="jndiName">
+         <value>jdbc/springPool</value>
+      </property>
+      <property name="resourceRef" value="true" />
+   </bean>
+ <bean id="data-source-target" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>oracle.jdbc.driver.OracleDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:oracle:thin:@192.168.0.84:1521:orcl11</value>
+		</property>
+		<property name="username">
+			<value>scott</value>
+		</property>
+		<property name="password">
+			<value>tiger</value>
+		</property>
+	</bean> 
+	<!-- 물리적으로 떨어져 있는 DB서버와 커넥션을 맺는데 필요한 정보를 로딩(Connection생성)하기 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="WEB-INF/mybatis-config.xml"/>
+		<property name="dataSource" ref="data-source"/>
+	</bean>
+	<!--물리적으로 떨어져 있는 DB서버와 커넥션을 맺는데 필요한 정보를 로딩하기 -->
+	<!--위에서 맺은 커넥션 정보를 활용하여 필요한 쿼리문을 요청할 수 있는 상태 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>	
+	<!--Transaction manager for a single JDBC DataSource  -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="data-source"/>
+	</bean>
+	<!-- 위에서 맺은 커넥션 정보를 활용하여 필요한 쿼리문을 요청한 상태-->
+	<bean id="sqlMapDeptDao" class="com.mvc.SqlMapDeptDao">
+	<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+	</bean>
+		<bean id="sqlMapCommonDao" class="com.mvc.SqlMapCommonDao">
+	<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+	</bean>
+		<bean id="sqlMapEmpDao" class="com.mvc.SqlMapEmpDao">
+	<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+	</bean>
+		<bean id="BoardDao" class="com.mvc.BoardDao">
+	<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+

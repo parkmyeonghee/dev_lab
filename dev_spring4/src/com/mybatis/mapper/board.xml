@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+<select id="btotalRecord" parameterType="java.lang.String" resultType="int">
+SELECT COUNT(b_no)as total FROM board_master
+</select>
+<delete id="boardMasterDelete" parameterType="bmVO">
+DELETE FROM board_master
+WHERE b_no=#{b_no}
+</delete>
+<delete id="boardSubDelete" parameterType="bsVO">
+DELETE FROM board_sub
+WHERE b_no=#{b_no}
+AND b_seq=#{b_seq}
+</delete>
+<update id="boardMasterUpdate" parameterType="bmVO">
+UPDATE board_master
+SET b_title=#{b_title}
+	,b_name=#{b_name}
+	,b_content=#{b_content}
+	,b_pw=#{b_pw}
+	,b_email=#{b_email}
+	,b_date=TO_CHAR(sysdate,'YYYY-MM-DD')
+	WHERE b_no=#{b_no}
+</update>
+<update id="boardSubUpdate" parameterType="bsVO">
+UPDATE board_sub
+SET b_file=#{b_file}
+	,b_size=#{b_size}
+WHERE b_no=#{b_no}
+AND b_seq=#{b_seq}
+</update>
+   <update id="bStepUpdate" parameterType="bmVO">
+    UPDATE board_master
+	  	SET b_step =b_step+1
+	  WHERE b_group=#{b_group} 
+	  AND b_step>#{b_step}
+    </update>
+   <select id="getBoardList" resultType="map" parameterType="bmVO">
+           SELECT t_board.rnum,t_board.b_no, t_board.b_title, t_board.b_name, t_board.b_date
+            ,t_board.b_content, t_board.b_group, t_board.b_pos, t_board.b_step
+            ,t_board.b_hit,t_board.b_pw
+            ,t_board.b_seq, t_board.b_file, t_board.b_size,t_board.b_email   
+        FROM  
+            ( SELECT
+             rownum rnum,
+             bm.b_no, bm.b_title, bm.b_name, bm.b_date
+            ,bm.b_content, bm.b_group, bm.b_pos, bm.b_step
+            ,bm.b_hit,bm.b_pw
+            ,bs.b_seq, bs.b_file, bs.b_size,bm.b_email
+        FROM board_master bm, board_sub bs
+        where bm.b_no = bs.b_no(+)
+        ) t_board    
+        <where>
+           <if test="b_no>0">
+              AND bm.b_no = #{b_no}
+           </if>
+         <if test="start>0">
+            <![CDATA[ AND t_board.rnum >= #{start} ]]>
+         </if>
+         <if test="end>0">
+            <![CDATA[ AND t_board.rnum <=#{end} ]]>
+         </if>      
+        </where>
+      ORDER BY t_board.b_group desc,  t_board.b_step asc 
+   </select>
+    <insert id="boardMasterInsert" parameterType="bmVO">
+	insert into board_master(b_no,b_title,b_name,b_content,b_pw,b_date
+                                ,b_group,b_pos,b_step,b_hit,b_email)
+                            values(seq_boardmaster_no.nextval,#{b_title},#{b_name},#{b_content}
+                           ,#{b_pw},TO_CHAR(sysdate,'YYYY-MM-DD'),#{b_group},#{b_pos},#{b_step}
+                           ,0,#{b_email})
+    </insert>
+      <insert id="boardSubInsert" parameterType="map">
+      <selectKey keyProperty="b_no" resultType="int" order="BEFORE">
+      select max(b_no) as b_no from board_master
+      </selectKey>
+		insert into board_sub(b_no,b_seq,b_file,b_size)
+                values(#{b_no},'1',#{b_file},#{b_size})	  
+    </insert>
+    <select id="getBgroup" parameterType="bmVO" resultType="int">
+       select 
+        NVL((select 
+        /*index_desc(board_master i_board_group)*/b_group
+        from board_master
+        where rownum =1
+        and b_group>0),0)+1 b_group
+        from dual
+    </select>
+</mapper>
+
+

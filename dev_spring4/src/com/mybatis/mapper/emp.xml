@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmpMapper">
+	<select id="currentTime" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT TO_CHAR(sysdate,'YYYY-MM-DD') FROM dual
+	</select>
+	<!--myBatis에서 프로시저 실습 추가  -->
+<select id="proc_salupdate" parameterType="com.vo.EmpVO" statementType="CALLABLE">
+	{call proc_salupdate(#{p_empno,mode=IN,jdbcType=INTEGER,javaType=int}
+	,#{msg,mode=OUT,jdbcType=VARCHAR,javaType=String})}
+</select>
+	<!--myBatis에서 프로시저 실습 끝  -->
+	<update id="empUpdate" parameterType="eVO">
+	UPDATE emp
+	SET
+	<choose>
+<!--
+조건에 따라 각 컬럼을 선택하여 실행하도록 할 때에는 if문을 사용한다.
+choose,when,otherwise 구문은 한 가지 조건을 만족할 때만 사용 하거나 둘중 하나 선택하여
+적용할 때 사용할 수 있다.
+여기서는(수정문) 각 조건에 따라 선택적으로 다중문 처리해야 하므로 if문을 사용하는것이 맞겠습니다.
+ -->
+	<when test="ename!=null or job!=null or mgr!=null or hiredate !=null or sal!=null or comm!=null or deptno!=null">
+	 ename=#{ename}
+	 ,job=#{job}
+	 ,mgr=#{mgr}
+	 ,hiredate=#{hiredate}
+	 ,sal=#{sal}
+	 ,comm=#{comm}
+	 ,deptno=#{deptno}
+	</when>
+	</choose>
+	<where>
+	<if test="empno>0">
+	AND empno=#{empno}
+	</if>
+	</where>
+	</update>
+	<insert id="empInsert" parameterType="eVO">
+		INSERT INTO emp(empno, ename, job, mgr, hiredate, sal,comm, deptno)
+		               VALUES(#{empno}, #{ename}, #{job}, #{mgr}, #{hiredate}, #{sal},#{comm}, #{deptno})
+	</insert>
+	<delete id="empDeleteALL" parameterType="list">
+		DELETE FROM emp
+		WHERE empno IN
+				 <foreach item="item" index="index" collection="list" 
+				 open="(" separator="," close=")">
+					#{item}
+				</foreach> 
+	</delete>	
+	<delete id="empDelete" parameterType="int">
+		DELETE FROM emp
+		<where>
+			<if test="_parameter>0">
+				AND empno =#{_parameter}
+			</if>
+		</where>
+	</delete>
+	<select id="getEmpList2" parameterType="list" resultType="eVO">
+		SELECT emp.empno, emp.ename, emp.job, TO_CHAR(emp.hiredate,'YYYY-MM-DD') hiredate
+		          ,emp.sal, emp.comm, dept.deptno
+		          ,emp.mgr, dept.dname
+		  FROM emp, dept
+		<where>
+			<if test="1==1">
+				AND  emp.deptno = dept.deptno
+			</if>
+			<if test="list!=null">
+			     AND dept.deptno IN
+				 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+					#{item}
+				</foreach> 
+			</if>
+		</where>	
+	</select>	  	
+	<select id="getEmpList" parameterType="java.util.Map" resultType="eVO">
+		SELECT emp.empno, emp.ename, emp.job, TO_CHAR(emp.hiredate,'YYYY-MM-DD') hiredate
+		          ,emp.sal, emp.comm, dept.deptno
+		          ,emp.mgr, dept.dname
+		  FROM emp, dept
+		<where>
+			<if test="1==1">
+				AND  emp.deptno = dept.deptno
+			</if>
+			<if test="deptno!=null">
+				AND dept.deptno = #{deptno} <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="empno!=null">
+				AND emp.empno = #{empno} <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="ename!=null">
+				AND emp.ename LIKE #{ename}||'%' <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="mgr!=null">
+				AND emp.mgr = #{mgr} <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="job!=null">
+				AND emp.job LIKE #{job}||'%' <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="hiredate!=null">
+				<![CDATA[ AND emp.hiredate < TO_DATE(#{hiredate},'YYYY-MM-DD')]]> <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="comm>0">
+				AND  emp.comm = #{comm} <!-- _parameter:원시타입일때 -->
+			</if>
+			<if test="sal!=null">
+				<![CDATA[ AND emp.sal > #{sal}]]> <!-- _parameter:원시타입일때 -->
+			</if>																					
+<!--  	
+====================================================
+마이바티스에서 조건검색시 허용되는 문장들	
+<if test="1==1 or 2==3">
+				AND dept.deptno = 30 
+			</if>		
+ 			<if test="ename.equals('ALLEN')">
+				AND emp.ename = #{ename} 
+			</if>	
+			<if test="ename==ename.toString()">
+				AND emp.ename = #{ename} 
+			</if>	
+			<if test="ename eq ename.toString()">
+				AND emp.ename = #{ename} 
+			</if>	
+====================================================			
+-->										
+		</where>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

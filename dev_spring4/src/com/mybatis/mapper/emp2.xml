@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmpMapper">
+   <select id="currentTime" parameterType="java.lang.String" resultType="java.lang.String">
+      SELECT TO_CHAR(sysdate,'YYYY-MM-DD') FROM dual
+   </select>
+   <delete id="empDeleteALL" parameterType="list">
+      DELETE FROM emp
+      WHERE empno IN
+             <foreach item="item" index="index" collection="list" 
+             open="(" separator="," close=")">
+               #{item}
+            </foreach> 
+   </delete>   
+   <delete id="empDelete" parameterType="int">
+      DELETE FROM emp
+      <where>
+         <if test="_parameter>0">
+            AND empno =#{_parameter}
+         </if>
+      </where>
+   </delete>
+   <select id="getEmpList2" parameterType="list" resultType="eVO">
+      SELECT emp.empno, emp.ename, emp.job, TO_CHAR(emp.hiredate,'YYYY-MM-DD') hiredate
+                ,emp.sal, emp.comm, dept.deptno
+                ,emp.mgr, dept.dname
+        FROM emp, dept
+      <where>
+         <if test="1==1">
+            AND  emp.deptno = dept.deptno
+         </if>
+         <if test="list!=null">
+              AND dept.deptno IN
+             <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+               #{item}
+            </foreach> 
+         </if>
+      </where>   
+   </select>        
+   <select id="getEmpList" parameterType="java.util.Map" resultType="eVO">
+      SELECT emp.empno, emp.ename, emp.job, TO_CHAR(emp.hiredate,'YYYY-MM-DD') hiredate
+                ,emp.sal, emp.comm, dept.deptno
+                ,emp.mgr, dept.dname
+        FROM emp, dept
+      <where>
+         <if test="1==1">
+            AND  emp.deptno = dept.deptno
+         </if>
+         <if test="deptno!=null">
+            AND dept.deptno = #{deptno} <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="empno!=null">
+            AND emp.empno = #{empno} <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="ename!=null">
+            AND emp.ename LIKE #{ename}||'%' <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="mgr!=null">
+            AND emp.mgr = #{mgr} <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="job!=null">
+            AND emp.job LIKE #{job}||'%' <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="hiredate!=null">
+            <![CDATA[ AND emp.hiredate < TO_DATE(#{hiredate},'YYYY-MM-DD')]]> <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="comm>0">
+            AND  emp.comm = #{comm} <!-- _parameter:원시타입일때 -->
+         </if>
+         <if test="sal!=null">
+            <![CDATA[ AND emp.sal > #{sal}]]> <!-- _parameter:원시타입일때 -->
+         </if>                                                               
+<!--     
+====================================================
+마이바티스에서 조건검색시 허용되는 문장들   
+<if test="1==1 or 2==3">
+            AND dept.deptno = 30 
+         </if>      
+          <if test="ename.equals('ALLEN')">
+            AND emp.ename = #{ename} 
+         </if>   
+         <if test="ename==ename.toString()">
+            AND emp.ename = #{ename} 
+         </if>   
+         <if test="ename eq ename.toString()">
+            AND emp.ename = #{ename} 
+         </if>   
+====================================================         
+-->                              
+      </where>
+   </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
