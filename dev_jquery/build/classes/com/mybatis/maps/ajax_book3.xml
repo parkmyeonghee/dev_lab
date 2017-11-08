@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AjaxBookMapper">
+	<select id="getBookList" resultType="com.vo.BookVO" parameterType="java.util.HashMap">
+		SELECT ab_no, ab_title, ab_author, ab_img
+		          ,ab_price, ab_publisher
+		  FROM ajax_book
+	</select>     
+	<insert id="bookInsert" parameterType="java.util.HashMap">
+		INSERT INTO ajax_book(ab_no, ab_title, ab_author, ab_img
+		                              , ab_price, ab_publisher, ab_size)
+		                      VALUES(seq_book_no.nextval, #{ab_title},#{ab_author}, #{ab_img}
+		                               ,#{ab_price},#{ab_publisher},#{ab_size})	
+	</insert>
+	<!-- HashMap<String,Object> pMap = new HashMap<String,Object>(); 
+			pMap.put("ab_no",1);
+			delete("bookDelete",pMap);
+	-->
+	<delete id="bookDelete" parameterType="java.util.HashMap">
+		DELETE FROM ajax_book
+		 WHERE ab_no = #{ab_no}
+	</delete>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AjaxMapper">
+<select id="test" parameterType="int" resultType="int">
+SELECT 1 FROM dual
+</select>
+<select id="getWordList" parameterType="com.vo.WordVO" resultType="com.vo.WordVO">
+SELECT w_no,w_word
+FROM ajax_word
+<where>
+<if test="w_word !=null">
+AND w_word LIKE #{w_word}||'%'
+</if>
+</where>
+</select>
+</mapper>

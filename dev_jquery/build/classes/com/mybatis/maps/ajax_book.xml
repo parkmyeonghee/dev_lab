@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AjaxBookMapper">
+   <select id="getBookList" resultType="com.vo.BookVO" parameterType="java.util.HashMap">
+      SELECT t_book.ab_no, t_book.ab_title, t_book.ab_author, t_book.ab_img
+                ,t_book.ab_price, t_book.ab_publisher
+        FROM ( SELECT rownum rnum, ab_no, ab_title, ab_author, ab_img
+                ,ab_price, ab_publisher
+              FROM ajax_book
+        )t_book
+        <where>
+        <if test="start!=null">
+            <![CDATA[ AND t_book.rnum >= #{start} ]]>
+         </if>
+         <if test="end!=null">
+            <![CDATA[ AND t_book.rnum <=#{end} ]]>
+         </if>   
+        <if test="ab_title!=null and choMode.equals('N')"> <!-- ab_title 은 파라미터로 온 거 -->
+        AND t_book.ab_title LIKE '%'||#{ab_title}||'%'<!-- 앞에건 테이블컬럼, 뒤에건 파라미터로 온 거 -->
+        </if>
+        <if test="ab_title!=null and choMode.equals('Y')"> 
+         AND func_chosungList(t_book.ab_title) LIKE '%'||#{ab_title}||'%'
+        </if>
+        <if test="ab_author!=null">
+        AND ab_author LIKE '%'||#{ab_author}||'%'
+        </if>
+        <if test="ab_publisher!=null">
+        AND ab_publisher LIKE '%'||#{ab_publisher}||'%'
+        </if>
+        </where>
+       ORDER BY t_book.ab_no asc
+   </select>  
+   <select id="totalRecord" parameterType="int" resultType="int">
+      SELECT count(ab_no) as total FROM ajax_book
+   </select>   
+   <insert id="bookInsert" parameterType="java.util.HashMap">
+      INSERT INTO ajax_book(ab_no, ab_title, ab_author, ab_img
+                                    , ab_price, ab_size,ab_pubdate, ab_publisher, ab_size)
+                            VALUES(seq_book_no.nextval,#{ab_title},#{ab_author},#{ab_img},#{ab_price},
+                            #{ab_size},#{ab_pubdate},#{ab_publisher},#{ab_size})   
+   </insert>
+   <!-- HashMap<String,Object> pMap = new HashMap<String,Object>(); 
+         pMap.put("ab_no",1);
+         delete("bookDelete",pMap);
+   -->
+   <delete id="bookDelete" parameterType="java.util.HashMap">
+      DELETE FROM ajax_book
+       WHERE ab_no = #{ab_no}
+   </delete>
+</mapper>

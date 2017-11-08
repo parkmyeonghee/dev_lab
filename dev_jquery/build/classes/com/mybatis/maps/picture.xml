@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PictureMapper">
+<select id="test" parameterType="int" resultType="int">
+SELECT 1 FROM dual
+</select>
+<select id="getPictureList" parameterType="int" resultType="com.vo.PictureVO">
+SELECT num,title,content,imgFile
+FROM ajax_picture
+<where>
+<if test="_parameter >0">
+AND num =#{_parameter}
+</if>
+</where>
+</select>
+<!-- <select id="getPictureList" parameterType="java.lang.String" resultType="com.vo.PictureVO">
+SELECT num,title,content,imgFile
+FROM ajax_picture
+<where>
+<if test="_parameter >0">
+AND num = #{_parameter}
+</if>
+</where>
+</select> -->
+</mapper>
