@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OnLineTestMapper">
+<!-- 프로시저 처리하기 -->
+<select id="proc_salupdate" parameterType="com.vo.EmpVO" statementType="CALLABLE">
+	{call proc_salupdate(#p_empno,mode=IN,jdbcType=INTEGER,javaType=int)
+	,#{msg,mode=OUT,jdbcType=VARCHAR,javaType=String})}
+</select>
+   <select id="testLogin" resultType="com.vo.ExamineeVO" parameterType="com.vo.ExamineeVO">
+      SELECT test_no,t_name, decision, score
+      ,DECODE(take_yn,'1','응시','미응시')as take_yn
+        FROM examinee
+        WHERE test_no=#{test_no}
+         </select>
+   <insert id="takeInsert" parameterType="com.vo.TakeVO">
+   INSERT INTO take(exam_cd,test_no,take1,take2,take3,take4,take5)
+   VALUES(#{exam_cd},#{test_no},#{take1},#{take2},#{take3},#{take4},#{take5})
+   </insert>
+   <select id="getRightAnswer" parameterType="java.lang.String" resultType="com.vo.RightAnswerVO">
+   SELECT exam_cd,answer1,answer2,answer3,answer4,answer5
+   FROM right_answer
+   WHERE exam_cd=#{exam_cd}
+   </select>
+   <update id="examineeUpdate" parameterType="com.vo.ExamineeVO">
+   update examinee
+   SET decision = #{decision}, score = #{score},take_yn=#{take_yn}
+   WHERE test_no=#{test_no}
+   </update>
+</mapper>

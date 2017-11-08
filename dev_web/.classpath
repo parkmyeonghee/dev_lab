@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Users/azaza/Desktop/dev_lab/dev_java.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_111">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/app/azaza/product/11.1.0/db_1/jdbc/lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.8.0_111/lib/resources.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-aop-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-aspects-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-beans-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-context-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-context-support-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-core-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-expression-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-jdbc-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-orm-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-tx-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-web-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/spring-webmvc-4.1.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/lib/ibatis-2.3.4.726.jar"/>
+	<classpathentry kind="lib" path="C:/lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/lib/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="C:/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/lib/servlet-api.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

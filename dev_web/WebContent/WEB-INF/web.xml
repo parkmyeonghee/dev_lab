@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+<!--context-param> -application
+서버 기동시 한 번 읽고서 계속 유지된다.(log설정,한글설정,) 
+유지보수를 위해 web.xml문서의 역할을 별도의 문서로 분할 관리
+<init-param>서블릿에 대한 요청이 있을 때 마다 새로 읽어들여하는
+내용은 <init-param>태그를 사용해서 설정
+</init-param
+디버깅 팁
+xml문서는 1차브라우저를 이ㅣ용해서 테스트함
+parserXXXException,SAXXXException 이 발생하면 xml문서를 디버깅 해야합니다.-->
+  <context-param>
+  <param-name>log4jConfigLocation</param-name>
+  <param-value>/WEB-INF/classes/log4j.properties</param-value>
+  </context-param>
+   <context-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>/WEB-INF/config/service.xml</param-value>
+  </context-param>
+  <!--회원가입 처리를 위한 Front클래스를 배치한다. -->
+  <servlet>
+  <servlet-name>MemberFrontController</servlet-name>
+  <servlet-class>com.mvc.MemberFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>MemberFrontController</servlet-name>
+  <url-pattern>*.mfc</url-pattern>
+  </servlet-mapping>
+   <!-- 인증 처리를 담당하는 MemberFrontController클래스 배치하기 시작 -->
+   <servlet>
+  <servlet-name>AjaxMemberFrontController</servlet-name>
+  <servlet-class>com.ajax.member.MemberFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>AjaxMemberFrontController</servlet-name>
+  <url-pattern>*.mem</url-pattern>
+  </servlet-mapping>
+  <!-- 인증 처리를 담당하는 MemberFrontController클래스 배치하기 끝 -->
+   <servlet>
+  <servlet-name>OnLineTestFrontController</servlet-name>
+  <servlet-class>com.cookie.OnLineTestFrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>OnLineTestFrontController</servlet-name>
+  <url-pattern>*.test</url-pattern>
+  </servlet-mapping>
+ 
+  
+  <!--세션(서버측에서 관리 )타임(기본유지시간-분단위설정)설정하기
+  물리적으로는 서버측의 pc의 캐시메모리 영역에 저장
+  서버는 사용자의 정보를 세션 아이디를 통해서 식별할 수 있습니다.
+  사용자의 세션아이디 정보는 사용자의 로컬 pc안에 쿠키를 저장하는 공간안에 담아둡니다.
+	사용자가 서버에 접속할 때 로컬 pc의 쿠키정보를 확인 -->
+  <session-config>
+  <session-timeout>30</session-timeout>
+  </session-config>
+  <display-name>dev_web</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+     <servlet>
+  <servlet-name>ScopeServlet</servlet-name>
+  <servlet-class>com.ch05.ScopeServlet</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>ScopeServlet</servlet-name>
+    <url-pattern>/ch05/service.do</url-pattern>
+  </servlet-mapping>
+    <servlet>
+  <servlet-name>FormServlet</servlet-name>
+  <servlet-class>com.ch03.FormServlet</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>FormServlet</servlet-name>
+    <url-pattern>/ch03/FormServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PizzaServlet</servlet-name>
+    <servlet-class>com.ch17.PizzaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PizzaServlet</servlet-name>
+    <url-pattern>/ch17/pizza.nhn</url-pattern>
+  </servlet-mapping>
+  <servlet>   
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>com.ch17.HelloServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/ch17/hello.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>sendServlet</servlet-name>
+    <servlet-class>com.ch17.TestSendServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>sendServlet</servlet-name>
+   <url-pattern>/ch17/testSend.do</url-pattern>
+  <!--   <url-pattern>/ch17/*</url-pattern> -->
+  </servlet-mapping>
+  <!--=================================================
+  서버에서 제공하는 상태 코드에 대한 에러 페이지 처리
+    ==================================================-->
+  <error-page>
+  <error-code>404</error-code>
+  <location>/error/error404.jsp</location>
+  </error-page>
+  <error-page>
+  <error-code>500</error-code>
+  <location>/error/error500.jsp</location>
+  </error-page>
+   <!--=================================================
+  서버에서 제공하는 Exception type에 대한 에러 페이지 처리
+    ==================================================-->
+  <error-page>
+  <exception-type>java.lang.NullPointerException</exception-type>
+  <location>/error/errorNullPointer.jsp</location>
+  </error-page>
+     <!--=================================================
+     웹사이트 전체에 대한 화면 템플릿 처리
+    ==================================================-->
+    <jsp-config>
+    <jsp-property-group>
+    <url-pattern>/view/*</url-pattern>
+    <include-prelude>/common/top.jspf</include-prelude>
+    <include-coda>/common/bottom.jspf</include-coda>
+    </jsp-property-group>
+    </jsp-config>
+</web-app>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- 
+XXX.html, XXX.js, XXX.css 모두 클라이언트측 언어입니다.
+처리 주체가 톰캣서버가 아니다.
+로컬PC에 위 파일들은 다운로드가 일어나고 
+다운로드된 파일이 브라우저를 통해서 실행되는 것입니다.
+ -->
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>팝업창</title>
+<script type="text/javascript">
+	function popup_close(){
+		var p_id = opener.g_id;
+		alert("부모창 변수 접근해보기 :"+p_id);
+		//나를 열어준 넘을 새로고침 처리하기
+		opener.location.reload();
+		self.close();
+	}
+</script>
+</head>
+<body>
+부모창 : index.jsp<br>
+자식창 : popup.html
+<input type="button" value="닫기" onClick="popup_close()">
+</body>
+</html>

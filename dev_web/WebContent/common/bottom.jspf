@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+    <%
+    String mem_id="test";
+    request.setAttribute("mem_id", mem_id);
+    %>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+<table width="1000" height="50" border="1" bordercolor="skyblue">
+<tr>
+<td align="center">한국 소프트웨어 인재개발원</td>
+</tr>
+</table>
+</body>
+</html>
