@@ -1,0 +1,83 @@
+<html> 
+ <head>
+  <title>Break Neck Pizza Delivery</title>
+  <link rel="stylesheet" type="text/css" 
+        href="../../css/breakneck.css" media="screen" />
+  <script type="text/javascript" src="../../js/requestPost.js"></script>
+  <script type="text/javascript" src="../../js/commons.js"></script>
+  <script language="javascript">
+  
+  	var request = null;
+  	function createRequest()
+  	{
+  		try{
+  			request = new XMLHttpRequest();
+  		}catch(trymicrosoft){
+  			try{
+  				request = new ActiveXObject("Msxml2.XMLHTTP");
+  			}catch(othermicrosoft){
+  				try{
+  					request = new ActiveXObject("Microsoft.XMLHTTP");
+  				}catch(failed){
+  					request = null;
+  				}
+  			}
+  		}
+  		//잘 되는지 에러검사하기
+  		if(request == null){
+  			alert("Error creating request object!!!");
+  		}
+  	}
+  	function getCustomerInfo()
+  	{
+  	//	alert("getCustomerInfo호출");
+  		createRequest();
+  		var u_tel=document.getElementById("i_tel").value; //고객이 입력한 전화번호 줍줍
+  	//	alert("사용자가 입력한 전화번호"+u_tel);
+  		var url = "getCustomerDetail.jsp?tel="+u_tel
+  				+"&time="+new Date().getTime();
+  		request.onreadystatechange =updatePage ;
+  		request.open("GET",url,true);
+  		request.send(null);
+  	
+  	}
+  	//콜백함수
+  	function updatePage()
+  	{
+  	//서버는 요청 처리가 끝나면 상태코드와 준비상태 4를 보내 줍니다.
+  		if(request.readyState == 4){
+  			if(request.status == 200){
+  				var customerAddress = request.responseText;
+  				//alert("서버페이지에서 읽어온 주소정보 확인:"+getAddress);
+  				//배송지 위치에 주소정보 불러오기
+  				document.getElementById("i_address").value = customerAddress;
+  			}else{
+  				alert("Error! Request status is "+request.status);
+  			}	
+  		 }
+  		}/////////end of updatePage
+  		function send(){
+  			document.getElementById("ih_tel").value=document.getElementById("i_tel").value;
+  			document.getElementById("if_pizza").submit();
+  		}
+  	
+  </script>      
+ </head>
+
+ <body>
+  <p><img src="../../images/breakneck-logo.gif" alt="Break Neck Pizza" /></p>
+	<!-- <form method="POST" action="placeOrder.jsp"> -->
+   <p>Enter your phone number:
+    <input type="text" size="14" name="tel" id="i_tel" onChange="getCustomerInfo();"/>
+   </p>
+   <p>Type your order in here:</p>
+   <form id="if_pizza" method="get" action="orderPizza.jsp">
+   <input type="hidden" name="h_tel" id="ih_tel">
+   <p><textarea name="order" id="i_order" rows="6" cols="50"></textarea></p>
+   </form>
+   <p>Your order will be delivered to:</p>
+   <p><textarea name="address" id="i_address" rows="4" cols="50"></textarea></p>
+   <p><input type="button" id="submit" value="Order Pizza"  onclick="send()"/></p>
+  </form>
+ </body>
+</html>

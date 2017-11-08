@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title></title>
+<!--
+return구문은 함수의 내부에서만 사용되는 분기문 입니다.
+break가 반복문을 빠져나오는데 사용하고 라벨을 이용해서 원하는
+곳으로 제어권을 넘길수 있던것 처럼 return은 함수의 내부에서 두 가지 기능을
+가지고 있다.
+첫째는 함수의 실행을 중지시키는 것으로 return을 만나는 순간 함수의
+실행은 중단 됩니다.
+두번째는 return뒤에 자료형을 둘 수 있는데 이렇게 return뒤에
+있는 자료형은 함수의 블록을 벗어나서 함수를 호출하는 위치로 전달.
+  -->
+</head>
+<body>
+<script type="text/javascript">
+function hamsu(){
+	return "문자열";
+	document.write("이문장은 실행되지 않습니다.");
+}
+var m=hamsu();
+document.write(m);
+</script>
+</body>
+</html>

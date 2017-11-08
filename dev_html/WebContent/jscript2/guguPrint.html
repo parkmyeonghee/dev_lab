@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>구구단 출력하기</title>
+<script type="text/javascript">
+function guguDan(){
+//document.write("구구단");
+var ps_dan=document.getElementById("is_dan").value;
+var pe_dan=document.getElementById("ie_dan").value;
+//document.write("시작단:"+ps_dan+"끝단:"+pe_dan);
+var temp="";
+//temp+="<h3>구구단</h3>";
+temp+="<table border='1'><thead>구구단</thead><tr>"
+/* 헤더 출력하기 시작 */
+for(var i=ps_dan;i<pe_dan;i++){
+	temp +="<td bgcolor='pink' align='center'>"+i+"단</td>";
+}
+/*헤더 출력하기 끝 */
+temp+="</tr><tr>";
+/* 구구단 출력하기 시작 */
+for(var i=ps_dan;i<=pe_dan;i++){
+	temp+="<td align='center'>";
+	for(var j=1;j<10;j++){
+		temp+="<td>"+i+"*"+j+"="+(i*j )+"</br>";
+	}
+	temp+="</td>";
+}
+/*구구단 출력하기 끝 */
+temp+="</tr></table>";
+document.write(temp);
+}
+</script>
+</head>
+<body>
+시작단:<input type="text" name="s_dan" id="is_dan"><br>
+끝단:<input type="text" name="e_dan" id="ie_dan"><br>
+<input type="button" value="구구단" onClick="guguDan()">
+</body>
+</html>

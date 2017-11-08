@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>사용자 객체 정의</title>
+</head>
+<body>
+<script type="text/javascript">
+function Person(x,y,z){
+	this.name=x;
+	this.weight=y;
+	this.gender=z;
+	
+}
+var haha=new Person("하하","67kg","남자");
+for(var pro in haha){
+	document.write(pro+"="+haha[pro]+"<br>");
+}
+
+</script>
+</body>
+</html>

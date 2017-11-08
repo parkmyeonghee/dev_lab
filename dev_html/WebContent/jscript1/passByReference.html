@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>해당 데이터가 있는 메모리 주소번지 할당</title>
+<script type="text/javascript">
+	function hamsu(p_img){
+		p_img.width="200";
+		
+	}
+</script>
+</head>
+<body>
+<img src="../images/eeyores.jpg" width=""400 height="300">
+<script type="text/javascript" >
+	var img1=document.images[0];
+	var img2=img1;
+	hamsu(img);
+	document.write("이미지의 width 값은="+img1.width);
+</script>
+</body>
+</html>

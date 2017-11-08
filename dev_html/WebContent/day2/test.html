@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>html연습</title>
+<script type="text/javascript">
+	var a = 10;//전역변수
+	//go 함수 구현하기
+	function go(){
+		alert("go 함수 호출 성공 : "+a);
+		console.log("크롬에서 로그 출력 확인 , 변수 a: "+a);
+		document.getElementById("d_msg").innerText = "안녕";
+		document.getElementById("d_msg").innerHTML = "<font size='20' color='blue'>안녕</font>";
+	}
+</script>
+</head>
+<body>
+<div id="d_msg">안녕하세요.</div>
+<script type="text/javascript">
+	//함수 호출하기
+	go();
+	//자바스크립트 영역입니다.
+	document.write("<b>html</b>");
+</script>
+여기는 html 영역입니다.
+<hr>
+야구공이미지(절대경로)
+<img src="http://192.168.0.46:9000/images/ball.jpg" width="200" height="200">
+야구공이미지(상대경로1)
+<img src="../images/ball.jpg" width="200" height="200">
+<br>
+야구공이미지(상대경로2)
+<img src="/images/ball.jpg" width="200" height="200">
+<hr>
+html은 루트 태그 입니다.
+반드시 루트 <p>태그</p>안에 작성합니다.
+body태그에 작성한 내용은 화면에서 확인이 가능합니다.
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

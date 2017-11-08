@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+html로 위치 찾기
+1.지오로케이션은 html5표준은 아니지만 w3c표준이며
+	자바스크립트 API 이다.
+	지오로케이션 API와 구글 지도 API는 다른 API이다
+	지오로케이션은 지구상에 있는 여러분의 위치에 관한 정보를
+	수집하는데만 초점이 맞춰져 있다.
+	사생활 침해 문제가 있다.
+	여러분이 어디에 있는지 알기 위해서는 지구상의 좌표를 표시하는
+	좌표시스템이 필요하다.
+	위도는 지구상의 남/북 지점을,경도는 동/서 지점을 가리킨다.
+	위도는 적도를 기준으로 경도는 영국의 그리니치를 기준으로 측정
+2.IP주소
+	이 접근법은 어디서나 작동한다는 것이다.
+	하지만 종종 IP주소가 서비스 되는 ISP사무실의 위치를 가리키기도 한다.
+	따라서 이 방법은 도시나 주변지역에서 신뢰할 수 있는 방법이다.
+	3.GPS(Global Positioning System)
+	신규 모바일 장치에서 지원하고 있고 위성을 이용해서 정확한 위치
+	정보를 제공한다.
+	위치 데이터는 고도,속도,목적지 정보가 포함되어 있다.
+	이를 사용하려면 여러분이 가진 장치가 하늘을 볼 수 있어야 하는데
+	시간이 걸릴 수 있다.
+	GPS정보 이용은 배터리 소모도 가중시킨다.
+	4.휴대폰
+	휴대폰 삼각 측량법은 한 곳 이상의 기지국에서 떨어진 거리를 계산해서 
+	여러분의 위치를 파악합니다.
+	이 방법은 정확한 편이며 GPS와는 달리 실내에서도 잘 작동합니다.
+	또한 GPS보다 훨신 빠르다.
+	근처에 기지국이 하나만 있을 경우 정확도는 떨어진다.
+	5.와이파이
+	매우 정확하고 빠르며 실내에서 작동한다.
+	단 얼마간은 정지해 있어야 한다
+ -->
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>어디에 있을까요?</title>
+<script type="text/javascript">
+function getMyLocation(){
+	if(navigator.gelocation){
+		navigator.geolocation.getCurrentPosition
+		(displayLocation,displayError);//이 아이들은 함수
+	}
+	else{
+		alert("이런 제공이 안되넹ㅎ");
+	}
+}
+function displayError(error){
+	var errorType={
+			0:"알려지지 않은 에러",
+			1:"사용자가 권한 거부",
+			2:"위치를 찾을 수 없음",
+			3:"요청 응답 시간 초과"
+	};
+	var errorMessage=errorType[error.code];
+	if(error.code==0||error,code==2){
+		errorMessage+""+error.message; //에러메세지
+	}
+	document.getElementById("div_loc").innerHTML=errorMessage;
+}
+function displayLocation(position){ //위치 정보
+	var latitude /*위도*/ = position.coords,latitude;
+	var longitude=position.coords.longitude;
+	document.getElementById("div_loc").innerHTML
+	="당신의 위도"+latitude+",경도:"+longitude+"에 있습니다.";
+}
+</script>
+</head>
+<body onLoad="getMyLocation()">
+<div id="div_loc">
+여러분의 위치를 여기에 나타날 것입니다.
+</div>
+</body>
+</html>

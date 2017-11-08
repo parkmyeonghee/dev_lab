@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>예외처리 구문</title>
+<!--
+주로 서버 프로그램과의 네트워크 상태에서 발생할 수 있는
+오류상황에 대처하기 위한 목적으로 사용된다. 기본적으로 자바의 예외
+처리와 비슷하지만 하나의 try구문에서 발생된 모든 종류의 예외상황은
+단 하나의 catch()구문의 블록에서 처리된다는 점이 자바와 다름
+  -->
+</head>
+<body>
+<script type="text/javascript">
+function hamsu(obj){
+	try {
+		document.write("매게변수는:"+obj.type+"입니다.");
+		document.write("<p>예외상황이 발생하지 않았습니다</p>");
+	} catch (exception) {
+		document.write(exception);
+		document.write("<p>예외처리 되었습니다.</p>");'
+	}
+}
+hamsu();
+</script>
+<input type="button" value="확인" onclick="hamsu(this)">
+</body>
+</html>

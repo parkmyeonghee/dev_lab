@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+결론 
+요청페이지에서 사용자가 입력한 값을 이동페이지에서(혹은 자식페이지) 유지하고 
+싶다면 이동페이지 혹은 자식페이지가 jsp페이지 일 경우에는 언제나 가능하다.
+그러나 응답이 나가는 페이지가 html문서일 때는 부모창과 자식창에 관계에 
+있을 때만 유지할 수 있다.
+
+문제 제시
+그러면 요청 페이지와 이동페이지가 html문서일 경우 이것을 해결할 수
+있는 방법은 없을까?
+비상태프로토콜에 대한 단점을 보완하기 위해서 쿠키객체를 제공하고 있다.
+누가:브라우저가 누구에게:개발자에게
+ -->
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>b.html</title>
+</head>
+<body>
+<script type="text/javascript">
+	var u_id;
+	u_id=opener.document.getElementById("if_a").mem_id.value;
+	document.write("사용자가 입력한 아이디 "+u_id);
+</script>
+</body>
+</html>

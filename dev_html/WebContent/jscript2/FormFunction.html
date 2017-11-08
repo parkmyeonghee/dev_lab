@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>form 함수</title>
+<script type="text/javascript">
+function hansuA(){
+	document.fo.reset();
+	}
+	function hamsuB(){
+		document.fo.submit();
+	}
+	function hamsuC(){
+		document.fo.memo.select();
+	}
+</script>
+</head>
+<body>
+<form name="fo">
+<input type="text" name="memo"><br>
+<button onClick="hamsuA()">폼리셋</button>
+<button onClick="hamsuB()">폼전송</button>
+<button onClick="hamsuC()">선택하기</button>
+</form>
+</body>
+</html>

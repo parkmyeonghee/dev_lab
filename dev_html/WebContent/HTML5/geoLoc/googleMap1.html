@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+	onLoad=getMyLocation():현재 위치 정보(position) -지오로케이션API
+	getMyLocation(){
+	displayLocation();
+	}
+	displayLocation(position){
+		showMap(postion.coords);
+		}
+	구글맵 추가하기
+	showMap(coords) -coords변수에 위치정보가 들어있다.
+	맵을 구성하기 위해서는 두가지 객체가 필요합니다.
+	이 객체는 구글에서 제공하는 객체를 사용합니다.
+	1)new LatLng(위도,경도)-
+	2)new Map(div태그의 아이디,맵에관한 옵션[줌,위치,맵타입]) 
+  -->
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>페이지에 구글 지도 추가하기</title>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCPylRXerp6Mzm3dh7vP16silCpPTXccnA">
+</script>
+<script type="text/javascript">
+	var map;//Sonata myCar 과 비슷한 느낌(전역변수)
+	function getMyLocation(){
+//navigator.getlocation속성은 지오로케이션 API전체를 포함하는 객체이다.
+//이 API의 메인메소드가 브라우저의 위치를 가져오는 일을 하는 getCurrentPosition이다.
+	if(navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(displayLocation);
+	}else{
+		alert("브라우저가 지오로케이션 API를 지원하지 않습니다.");
+	}
+}
+	function displayLocation(position)
+	{
+		//position.coords.latitude-위도,position.coord.longitude
+		showMap(position.coords);
+	}
+//구글맵을 표시하고 또 현재 위치정보를 표시할 수도 있고
+//풍선도움말 안에 메모(링크추가)를 남길 수도 있다.
+//구글에서 제고공하는 Map객체를 생성하기
+function showMap(coords){
+	//현재 내 위치정보를 담고있는 객체 생성(위도,경도)
+	var googleLatAndLong=
+		new google.maps.LatLng(coords.latitude,coords.longitude);
+	//new javax.swing.JFrame(); 패키지 정보를 넣어 주는것이다.
+	var mapDIV=document.getElementById("d_map");
+	var mapOptions={
+		//ZOOM옵션 값으로 0에서 21까지 설정할 수 있는데 숫자가 클 수록
+		//더 자세히 보입니다.
+		zoom:10,
+		//LatLng객체의 위치를 지도의 중심으로 설정합니다.
+		center:googleLatAndLong,
+		//맵타입 지정하기
+		mapTypeId:google.maps.MapTypeId.ROADMAP
+	};
+	
+	map= new google.maps.Map(mapDIV,mapOptions);
+	//지도에 내 위치 표시하기
+		var markerTitle ="맛집";
+		var marker = new google.maps.Marker({
+		position:googleLatAndLong
+		,map:map
+		,title:markerTitle
+	});
+		//말풍선 붙이기
+		//마커를 클릭했을때 나타나는 말풍선의 최대 크기
+		var markerMaxWidth=300;
+		//말풍선의 내용
+		var contentSrting ="<div><h2>맛집</h2><p>내용</p>";
+			contentString+="<table border='1' bordercolor='pink' width='250'>";
+			contentString+="<tr><td><img src='../../images/puzzle.jpg'></td></tr>";
+			contentString+="<tr><td>내용</td></tr>";
+			contentString+="</table>"
+			contentString+="<a href='http://www.naver.com' target='_blank'>네이버</a></div>";
+		var infowindow = new google.maps.InfoWindow({
+			content:contentString
+			,maxWidth:markerMaxWidth
+		});
+		//이벤트 처리하기 -이벤트 소스:map,구글에서 제공하는 이벤트처리한다.
+		google.maps.event.addListener(marker,'click',function(){
+		infowindow.open(map,marker)
+});
+</script>
+</head>
+<!--
+onLoad이벤트 핸들러는 해당 document(googleMap1.html)에 DOM구성이 끝났을 때
+ -->
+<body onLoad="getMyLocation()">
+<!-- 
+태그내에 스타일을 적용할 수 있다.
+외부파일에서 제공하는 속성값과 태그내에서 코딩한 속성이
+중복될때는 태그내에 있는 속성이 우선적용된다.
+-->
+<div id ="d_map" style="width:800px; height:650px;"></div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>구글맵 위치</title>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCPylRXerp6Mzm3dh7vP16silCpPTXccnA">
+</script>
+</head>
+<body onLoad="initMap()">
+<div id="map" style="width:800px;height:650px"></div>
+<script type="text/javascript">
+function initMap(){
+	var map=new google.maps.Map(document.getElementById("map"),{
+		zoom:15 //줌크기
+		,center:{lat: 37.389880,lng: 126.950627}
+	,mapTypeId:google.maps.MapTypeId.ROADMAP
+	});
+
+var locationArray=[
+	{lat: 37.389880,lng: 126.950627}
+	,{lat: 37.497950,lng: 127.027621}
+	,{lat: 37.582122,lng: 127.001849}
+	,{lat: 37.570465,lng: 126.992086}
+	,{lat: 37.558105,lng: 126.925491}
+	
+];
+var flightPath=new google.maps.Polyline({
+	path:locationArray
+	,geodesic:true
+	,strokeColor:'#FF000'//선 색상
+	,strokeOpacity:1.0//선 투명도
+	,strokeWeight:2//선 두께
+});
+
+//마커 여러개 찍기
+for(var i=0;i<locationArray.length;i++){
+	var marker=new google.maps.Marker({
+		map:map
+		,draggable:false
+		,animation:google.maps.Animation.DROP
+		,position:{lat:locationArray[i].lat,lng:locationArray[i].lng}
+	});
+}////////////////////////end of for
+
+marker.addListener('click',toggleBounce);//마커 클릭했을 때 이벤트
+
+function toggleBounce(){
+	if(marker.getAnimation()!=null){
+		marker.setAnimation(null);
+	}else{
+		maker.setsetAnimation(google.mapsAnimation.BOUNCE);
+	}
+}
+flightPath.setMap(map);
+marker.setMap(map);
+}
+</script>
+</body>
+</html>

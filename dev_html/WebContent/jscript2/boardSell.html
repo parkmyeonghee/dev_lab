@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>보드판매량 집계</title>
+<link rel="stylesheet" type="text/css" href="../css/boards.css">
+<!-- css파일을 가져오는것 -->
+<script type="text/javascript" src="../js/commons.js"></script>
+<script type="text/javascript">
+function getBoardSold(){
+	//alert('test');
+	var newTotal=2000;
+	var v_boardsoldEL=document.getElementById("boards_sold");
+	var bSold=getText(v_boardsoldEL);
+	//alert(bSold);
+	//새로 집계된 보드판매량으로 갱신하기
+	replaceText(v_boardsoldEL,newTotal);
+	var priceEL=document.getElementById("price");//span태그 접근 노드접근하려고 EL붙여줌
+	var price=getText(priceEL);//소비자 금액 담기
+	var costEL=document.getElementById("cost");//span태그 접근 노드접근하려고 EL붙여줌
+	var cost=getText(costEL);//소비자 금액 담기
+	//보드 한 개당 마진 금액 구하기
+	var cashPerBoard=price-cost;
+	//총 마진 금액 구하기
+	var cashEL=document.getElementById("cash");
+	var cash=cashPerBoard*newTotal;
+	replaceText(cashEL,cash); //이것을 바꿔서 주시오
+	//alert("보드 한개당 마진:"+cashPerBoard+",총마진:"+cash); 확인영
+	/* var v_price=document.getElementById("price").value;
+	var v_cost=document.getElementById("cost").value;
+	console.log(v_boards_   sold+","+v_price+","+v_cost); */
+}
+
+</script>
+</head>
+<!-- <body onLoad="test()"> -->
+<table width="300" height="80">
+<tr>
+<th>보드 판매량</th><!--textnode 태그이름은 노,값은 존재 -->
+<td><span id="boards_sold">1000</span></td>
+</tr> 
+<tr>
+<th>소비자가</th>
+<td><span id="price">250000</span></td>
+</tr>
+<tr>
+<th>구매가</th>
+<td><span id="cost">170000</span></td>
+</tr>
+</table>
+<h2>마진금액:<span id="cash">80000000원</span></h2>
+<input type="button" value="마진은?" onClick="getBoardSold()">
+</body>
+</html>

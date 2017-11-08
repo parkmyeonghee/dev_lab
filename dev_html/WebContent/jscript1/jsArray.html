@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+var users=["홍길동","이순신","강감찬"];
+for(i=0;i<user.length;i++){
+	document.write(users[i],"<br>");
+}
+//명시적 형변환
+var i1=""+10;
+var i2=new String(10);
+var i3=(10).toString();
+document.write(i1,i2,i3);
+document.write("<hr>");
+var obj= new boolean(false);
+var bool=obj.valueOf();
+//if문장은 객체이기 때문에 true로 해석됩니다.
+if(obj)document.write("참입니다.");
+//20번 라인에서 기본 자료형으로 다시 변경되었기 때문에 false로 해석
+if(bool)document.write("거짓입니다.");
+</script>
+</body>
+</html>

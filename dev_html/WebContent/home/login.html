@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+xxx.html,xxx.js,xxx.css 모두 클라이언트측 언어입니다.
+처리 주체가 톰캣서버가 아니다.
+로컬PC에 위 파일들은 다운로드가 일어나고
+다운로드된 파일이 브라우저를 통해서 실행되는 것이다. 
+ -->
+<html>
+<head>
+<script type="text/javascript">
+function pop_close(){
+	var p_id=opener.g_id;
+	console.log("부모창에 변수 접근해보기:"+p_id);
+	opener.location.reload();//opener가 부모를 가르키는것. location은 reload의 객체
+	self.close();
+}
+</script>
+<title>로그인 팝업</title>
+</head>
+<body>
+부모창:index.jsp<br>
+자식창:login.html<br>
+<form>
+<input type="button" value="닫기" onclick="pop_close()">
+</form>
+</body>
+</html>

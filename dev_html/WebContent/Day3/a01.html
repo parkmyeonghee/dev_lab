@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>a.html</title>
+<script type="text/javascript">
+	function move(){
+		console.log(document.getElementById("imem_id").value);
+		document.getElementById("if_a").method="GET";
+		document.getElementById("if_a").action="b.html";
+		//document.getElementById("if_a").action="b.jsp";
+		//폼태그내에 컴포넌트(독립적인역할을 수행할수 있는 모듈)에 입력한 값들을 서버로 전송할때
+		//submit함수를 호출해야 전송된다.
+		document.getElementById("if_a").submit();
+	}
+	function popup(){
+		var options = "location=no, status=yes, left=0"
+		    options+=", top=0, width=200, height=100";
+		var bhtml=window.open("./b1.html",'자식창(b.html)',options);
+		bhtml.focus();
+	}
+</script>
+</head>
+<body>
+<form id="if_a">
+<input type="text" name="mem_id" id="imem_id">
+<input type="button" value="이동" onClick="popup()">
+</form>
+</body>
+</html>

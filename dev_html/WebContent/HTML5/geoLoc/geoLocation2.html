@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>ㅇㅇㅇㅇ</title>
+<script type="text/javascript">
+	//집의 위치 정보를 담을 변수 선언
+	var myCoords={
+	latitude: 37.395149,//나의 정보 입력
+	longitude:126.942280
+	};
+	function getMyLocation(){
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition
+			(displayLocation,displayError);//이 아이들은 함수
+		}
+		else{
+			alert("이런 제공이 안되넹ㅎ");
+		}
+	}
+	//insert here
+	  function computeDistance(startCoords, destCoords)
+   {
+      var startLatRads = degreesToRadians(startCoords.latitude);
+      var startLongRads = degreesToRadians(startCoords.longitude);
+      var destLatRads = degreesToRadians(destCoords.latitude);
+      var destLongRads = degreesToRadians(destCoords.longitude);
+      console.log(startLatRads+":"+startLongRads+":"+destLatRads+":"+destLongRads);
+      var Radius = 6371;//지구의 반경(km)
+      var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) +
+                     Math.cos(startLatRads) * Math.cos(destLatRads) *
+                     Math.cos(startLongRads - destLongRads)) * Radius;
+      return distance;
+   }
+   function degreesToRadians(degrees){
+      var radians = (degrees * Math.PI)/180;
+      return radians;
+   }
+	function displayError(error){
+		var errorType={
+				0:"알려지지 않은 에러",
+				1:"사용자가 권한 거부",
+				2:"위치를 찾을 수 없음",
+				3:"요청 응답 시간 초과"
+		};
+		var errorMessage=errorType[error.code];
+		if(error.code==0||error,code==2){
+			errorMessage+""+error.message; //에러메세지
+		}
+		document.getElementById("div_loc").innerHTML=errorMessage;
+	}
+	function displayLocation(position){ //위치 정보
+		var latitude /*위도*/ = position.coords,latitude;
+		var longitude=position.coords.longitude;
+		document.getElementById("div_loc").innerHTML
+		="당신의 위도"+latitude+",경도:"+longitude+"에 있습니다.";
+		var km=computeDistance(position.coords,myCoords);
+		document.getElementById("div_distance").innerHTML
+		="당신은 집과"+km+"km 떨어져 있습니다.";
+	}
+</script>
+</head>
+<body onload="getMyLocation()">
+<div id="div_loc">
+여러분의 위치가 여기에 나타날 것 입니다.
+</div>
+<div id="div_distance">
+여러분의 집과의 거리가 여기에 나타날 것 입니다.
+</div>
+</body>
+</html>

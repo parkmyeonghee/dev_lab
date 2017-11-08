@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Ajax를 이용한 Post전송</title>
+<script type="text/javascript" src="../../js/requestPost.js"></script>
+<script type="text/javascript">
+	//createRequest();
+	//alert(request); //null,Object-XMLHttpRequest 함수호출 안하고찍으면 null이찍힘
+	function call(){
+		var str="";
+		createRequest();
+		request.onreadystatechange =requestProcess;
+		request.open("post","./requestPost.xml",true);
+		request.send(str);
+	}
+</script>
+</head>
+<body>
+
+Post메소드 활용하기<br>
+xml문서를 직접 호출해 보기<br>
+<input type="button" value="xml문서호출" onClick="call()">
+<div id="requestDisplay"></div>
+</body>
+</html>
