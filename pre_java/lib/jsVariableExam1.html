@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>자바스크립트-변수와 함수</title>
+<script type="text/javascript" src="../js/commons.js">
+
+</script>
+<script type="text/javascript">
+//전역변수나 함수 선언할 때:<head></head>
+//변수선언:var변수명 =값;
+//자바스크립트는 컴파일 하지 않습니다.
+//따라서 변수 선언시 별도의 타입을 선언하지 않고 초기화값에
+//따라서 타입이 결정된다.(런타임시에 결정됨)
+var v_id="test";
+//자바스크립트는 함수의 중복선언을 지원하지 않습니다.
+//메소드 오버라이딩,메소드 오버로딩을 지원하지 않습니다.
+function send(p_val){//p_val=10
+	console.log("p_val:"+p_val);//변수값을 확인하고 싶을 때, 어디까지 실행 된거?
+	document.getElementById("if_age").method="GET";
+	//요청에 대한 처리는 서버(Tomcat:WAS-Wed Application Server)에서 담당해야 합니다.
+	//자바로는 할 수 없는것인가?- 웹 서비스에 필요한 요청객체와 응답객체를 제공하지 않습니다.
+	//jsp 혹은 servlet을 사용해야 웹서비스(통신,스레드:톰캣이 담당)를 제공할 수 있다.
+	//자바가 하는일(웹서비스): 업무처리 담당,자료구조 사용(select결과를 담는다.)
+	document.getElementById("if_age").action="ageAction.jsp";//너는 어디로 가라
+	//주소창에 URL이 바뀌면 기존에 요청은 끊어지고 새로운요청이 처리된다.
+	//jsVariableExam1에서 submit이 일어나면 응답페이지(ageAction.jsp)로 제어권이 넘어간다.
+	//document.getElementById("if_age").submit();//submit이라는 함수가 호출됐을때 실제 전송이 일어난다.
+	
+	document.getElementById("if_name").method="GET";
+	document.getElementById("if_name").action="nameAction.jsp";//목적지-요청에 대한 처리 페이지
+	document.getElementById("if_name").submit();//submit을하면 액션으로 넘어간다. 
+}
+function send2(){
+	//alert('22'); 함수 두개로처리할 때
+	var u_age=document.getElementById("i_age").value;//
+	url="./ageAction.jsp?age="+u_age
+	popupwidth="300";
+	popupheight="150";
+	popupname="ageAction";
+	cmm_window_popup(popupwidth,popupheight,popupname);
+}
+</script>
+</head>
+<body>
+<script type="text/javascript">
+//스크립트 문에서는  ""와 ''모두 사용 할 수 있다.
+//단 ""과 같이 사용할 경우에는 바깥쪽에 더블 안쪽에 싱글
+//if elseif 를 쓸 경우에는 학점같은 애들을 사용해준다.
+if(0){
+	console.log("0은 false"); 
+}
+else if(10){
+	console.log("0이 아닌것은 모두 true");
+}
+if("이순신"){ //else if로 쓰면안된다 이것도 맞는 사실이라서 오류가 난다.
+	console.log("문자열은 모두 true");
+	
+}
+</script>
+<form name="f_age" id="if_age"> <!-- 전송할 때 쓴다. -->
+<label>나이:</label><input type="number" name="age" id="i_age"/>
+</form>
+<form name="f_name" id="if_name"><!-- id는 유니크 하다.같은 이름사용ㄴㄴ -->
+<label>이름:</label><input type="text" name="mem_name" id="imem_name"/>
+</form>
+<input type="button" value="전송" onClick="send(''),send2()">
+<!--send()메소드에 값을 넘겨주고싶으면 값을 안에 넣어주면된다
+값으로 쓰려면 ''을 붙여야 한다.
+함수를 두개 호출 가능하다. -->
+</body>
+</html>

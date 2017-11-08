@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="addrtb">
+	<typeAlias 
+		alias="addressVO" 
+		type="com.vo.AddressVO"/>
+	<insert id="addrIns" parameterClass="addressVO">
+		INSERT INTO addrtb(name, address, hp, gender
+		                   , relationship,birthday, comments, registerdate, id)
+				     VALUES (#name#, #address#,#hp#
+				     ,#gender#, #relationship#,#birthday#,
+				      #comments#, #registerdate#, seq_addr_id.nextval)
+	</insert>
+	<select id="getAddrList" parameterClass="com.vo.AddressVO" resultClass="addressVO">
+	select id,name,address,hp,relationship,birthday,comments,gender,registerdate from addrtb 
+	 <dynamic prepend="WHERE"> 
+      <isGreaterThan prepend="AND" property="id" compareValue="0">             
+		id=#id#
+      </isGreaterThan>
+      </dynamic> 
+	</select>	
+<update id="addrUpd" parameterClass="addressVO">
+   UPDATE addrtb set name=#name#
+   ,address=#address#
+   ,hp=#hp#
+   ,gender=#gender#
+   ,relationship=#relationship#
+   ,birthday=#birthday#
+   ,comments=#comments#
+    WHERE id=#id#
+   </update>
+<!-- 	<select id="test" parameterClass="com.vo.AddressVO" resultClass="java.lang.String">
+	select TO_CHAR(sysdate,'YYYY-MM-DD') from dual
+	</select>	 -->
+</sqlMap>
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_111"/>
+	<classpathentry kind="lib" path="C:/Users/azaza/Desktop/dev_lab/pre_java/lib/ibatis-2.3.4.726.jar"/>
+	<classpathentry kind="lib" path="C:/app/azaza/product/11.1.0/db_1/jdbc/lib/ojdbc5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
